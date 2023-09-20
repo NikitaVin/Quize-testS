@@ -1,27 +1,27 @@
-const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const ESLintPlugin = require("eslint-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-let mode = 'development'
+let mode = 'development';
 if (process.env.NODE_ENV === 'production') {
-    mode = 'production'
+  mode = 'production';
 }
 
 module.exports = {
-  entry: "./src/index.tsx",
+  entry: './src/index.tsx',
   output: {
-    path: path.join(__dirname, "build"),
-    filename: "index.bundle.js",
-    publicPath: "/",
+    path: path.join(__dirname, 'build'),
+    filename: 'index.bundle.js',
+    publicPath: '/nikitavin.github.io/',
   },
   mode: mode,
   resolve: {
-    extensions: [".tsx", ".ts", ".js"],
+    extensions: ['.tsx', '.ts', '.js'],
   },
   devServer: {
     static: {
-      directory: path.resolve(__dirname, "src"),
+      directory: path.resolve(__dirname, 'src'),
     },
   },
   module: {
@@ -29,55 +29,55 @@ module.exports = {
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        use: ["babel-loader"],
+        use: ['babel-loader'],
       },
       {
         test: /\.(ts|tsx)$/,
         exclude: /node_modules/,
-        use: ["ts-loader"],
+        use: ['ts-loader'],
       },
       {
         test: /\.(sa|sc|c)ss$/,
-                use: [
-                    (mode === 'development') ? "style-loader" : MiniCssExtractPlugin.loader,
-                    "css-loader",
+        use: [
+          mode === 'development' ? 'style-loader' : MiniCssExtractPlugin.loader,
+          'css-loader',
+          {
+            loader: 'postcss-loader',
+            options: {
+              postcssOptions: {
+                plugins: [
+                  [
+                    'postcss-preset-env',
                     {
-                        loader: "postcss-loader",
-                        options: {
-                            postcssOptions: {
-                                plugins: [
-                                    [
-                                        "postcss-preset-env",
-                                        {
-                                            // Options
-                                        },
-                                    ],
-                                ],
-                            },
-                        },
+                      // Options
                     },
-                    "sass-loader",
+                  ],
                 ],
+              },
+            },
+          },
+          'sass-loader',
+        ],
       },
       { test: /\.svg$/, loader: 'svg-inline-loader' },
       {
         test: /\.(jpg|jpeg|png|gif|mp3|svg)$/,
-        use: ["file-loader"],
+        use: ['file-loader'],
       },
       {
         test: /\.svg$/i,
         issuer: /\.[jt]sx?$/,
         use: ['@svgr/webpack'],
-      }
+      },
     ],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, "src", "index.html"),
+      template: path.join(__dirname, 'src', 'index.html'),
     }),
-    new ESLintPlugin({ extensions: ["js", "jsx", "ts", "tsx"] }),
+    new ESLintPlugin({ extensions: ['js', 'jsx', 'ts', 'tsx'] }),
     new MiniCssExtractPlugin({
-      filename: '[name].[contenthash].css'
-  }),
+      filename: '[name].[contenthash].css',
+    }),
   ],
 };
