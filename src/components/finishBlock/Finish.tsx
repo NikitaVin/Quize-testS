@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { FullInfoResults } from './components/FullInfoResults/FullInfoResults';
-import { ButtonBlock, FinishImg, WrapperFinish } from './Finish.styles';
+import { ButtonBlock, FinishBlockText, FinishImg, WrapperFinish } from './Finish.styles';
 import { useSelector } from 'react-redux';
 import { questinosSelector } from '../../redux/slices/questionSlice';
 import { imgUrl } from '../../assets/img/restart';
@@ -26,9 +26,9 @@ export const Finish: FC<IFinish> = ({
   return (
     <WrapperFinish>
       <FinishImg src={imgUrl} alt="Финиш" />
-      <p>
+      <FinishBlockText>
         Правильных ответов {totalScore} из {questions.items.length}
-      </p>
+      </FinishBlockText>
       <ButtonBlock>
         <MyButton onClick={onClickRestart} text="Пройти еще раз" />
         <MyButton onClick={onClickOpenFullResult} text="Cтатистика" />

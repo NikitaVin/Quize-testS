@@ -19,7 +19,7 @@ interface IAnswers {
 export const Answers: FC<IAnswers> = ({ text, question }) => {
   const { answer } = useSelector(selectorAnswer);
   const dispatch = useDispatch();
-
+  console.log(answer);
   const didChecked = findId(text, answer);
 
   const onClickVariant = (text: string) => {
@@ -50,7 +50,7 @@ export const Answers: FC<IAnswers> = ({ text, question }) => {
     <Answer key={text} data-testid="answers-test">
       <FormControl key={text} data-testid="answers-test">
         <FormControlLabel
-          onClick={
+          onChange={
             Array.isArray(question.correct)
               ? () => onClickFewVariants(text)
               : () => onClickVariant(text)

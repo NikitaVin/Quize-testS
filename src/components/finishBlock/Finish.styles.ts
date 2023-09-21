@@ -54,3 +54,7 @@ export const FinishRestartImg = styled.img({
     transform: 'rotate(360deg)',
   },
 });
+
+export const FinishBlockText = styled.p({
+  marginBottom: '10px',
+});
