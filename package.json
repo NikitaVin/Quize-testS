@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.tsx",
-  "homepage": "https://github.com/NikitaVin/nikitavin.github.io.git",
+  "homepage": "https://NikitaVin.github.io/Quize-testS",
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -b main -d build",
