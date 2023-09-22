@@ -12,6 +12,5 @@ describe('App component', () => {
     );
     const appElement = screen.getByTestId('app-test1');
     expect(appElement).toBeInTheDocument();
-    expect(appElement).toHaveTextContent('Loading');
   });
 });

@@ -1,31 +1,40 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Answers } from './components/Answers/Answers';
 import { ProgressBar } from './components/ProgressBar/ProgressBar';
-import { Question } from './components/Question/Question';
-import { Wrapper } from './Quize.styles';
-import { IItems } from '../../redux/slices/questionSlice';
+import { Wrapper, Question } from './Quize.styles';
 import { useSelector } from 'react-redux';
-import { IAnswer, selectorAnswer } from '../../redux/slices/answerSlice';
-import { MyButton } from '../Button/Button';
+import { selectorAnswer } from '../../redux/slices/answerSlice';
+import { MyButton } from '../Button/MyButton';
+import { IAnswer, ItemsTypes } from '../../redux/types';
 
 interface IQuize {
-  question: IItems;
-  onClickAnswer: (userVariants: IAnswer[]) => void;
+  question: ItemsTypes;
+  onClick: (userVariants: IAnswer[]) => () => void;
   step: number;
 }
 
-export const Quize: FC<IQuize> = ({ question, onClickAnswer, step }) => {
+export const Quize: FC<IQuize> = ({ question, onClick, step }) => {
   const { answer } = useSelector(selectorAnswer);
-  const varinat = question.variants;
+  const [disabled, setDisabled] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (Array.isArray(question.correct) && answer.length >= 2) {
+      setDisabled(false);
+    } else if (!Array.isArray(question.correct) && answer.length === 1) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
+  }, [answer, question]);
+
   return (
     <Wrapper data-testid="quize-test">
       <ProgressBar step={step} />
-      <Question question={question} />
-      {varinat.map((text) => {
+      <Question>{question.title}</Question>
+      {question.variants.map((text) => {
         return <Answers key={text} text={text} question={question} />;
       })}
-
-      <MyButton onClick={() => onClickAnswer(answer)} text="Ответить" />
+      <MyButton onClick={onClick(answer)} text="Ответить" disabled={disabled} />
     </Wrapper>
   );
 };

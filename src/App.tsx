@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from 'react';
+import { FC, useState, useEffect, useCallback } from 'react';
 import { GlobalStyles } from './styles/global.styles';
 import { DivApp } from './App.styles';
 import { useAppDispatch } from './redux/store';
@@ -6,7 +6,9 @@ import { getAsyncQuestions, questinosSelector } from './redux/slices/questionSli
 import { useDispatch, useSelector } from 'react-redux';
 import { Finish } from './components/finishBlock/Finish';
 import { Quize } from './components/quizeBlock/Quize';
-import { IAnswer, clearFullAnswer } from './redux/slices/answerSlice';
+import { clearFullAnswer } from './redux/slices/answerSlice';
+import { Download } from './components/Download/Download';
+import { IAnswer } from './redux/types';
 
 const App: FC = () => {
   const appDispatch = useAppDispatch();
@@ -21,19 +23,15 @@ const App: FC = () => {
   const [step, setStep] = useState(0);
   const [totalScore, setTotalScore] = useState(0);
   const question = questions.items[step];
-  const [yourAnswersArr, setYourAnswersArr] = useState<string[]>([]);
+  const [answers, setAnswers] = useState<string[]>([]);
 
-  const onClickAnswer = (userVariants: IAnswer[]) => {
-    if (!userVariants.length) {
-      alert('Выберите вариант ответа');
-    } else if (Array.isArray(question.correct) && userVariants.length < 2) {
-      alert('Минимум 2 варианта ответа');
-    } else {
+  const onClickAnswer = useCallback(
+    (userVariants: IAnswer[]) => () => {
       if (userVariants.length === 1 && typeof question.correct === 'number') {
         if (userVariants[0].variant === question.variants[question.correct]) {
           setTotalScore(totalScore + 1);
         }
-        setYourAnswersArr([...yourAnswersArr, userVariants[0].variant]);
+        setAnswers([...answers, userVariants[0].variant]);
       }
       if (userVariants.length > 1 && Array.isArray(question.correct)) {
         if (
@@ -45,40 +43,36 @@ const App: FC = () => {
           setTotalScore(totalScore + 1);
         }
         const multiVariants = userVariants.map((el) => ((el as unknown) = el.variant));
-        setYourAnswersArr([...yourAnswersArr, multiVariants.join(', ')]);
+        setAnswers([...answers, multiVariants.join(', ')]);
       }
       dispatch(clearFullAnswer());
       setStep(step + 1);
-    }
-  };
+    },
+    [answers, dispatch, question, step, totalScore]
+  );
 
   const [openFullResult, setOpenFullResult] = useState(false);
 
-  const onClickRestart = () => {
-    setYourAnswersArr([]);
+  const onClickRestart = useCallback(() => {
+    setAnswers([]);
     setStep(0);
     setTotalScore(0);
     setOpenFullResult(false);
-  };
+  }, []);
 
-  const onClickOpenFullResult = () => {
+  const onClickOpenFullResult = useCallback(() => {
     setOpenFullResult(!openFullResult);
-  };
+  }, [openFullResult]);
 
   return (
     <DivApp openFullResult={openFullResult} data-testid="app-test1">
       <GlobalStyles />
       {questions.status === 'loaded' ? (
         step !== questions.items.length ? (
-          <Quize
-            data-testid="Quize-elem"
-            step={step}
-            onClickAnswer={onClickAnswer}
-            question={question}
-          />
+          <Quize data-testid="Quize-elem" step={step} onClick={onClickAnswer} question={question} />
         ) : (
           <Finish
-            yourAnswersArr={yourAnswersArr}
+            answers={answers}
             openFullResult={openFullResult}
             onClickOpenFullResult={onClickOpenFullResult}
             onClickRestart={onClickRestart}
@@ -86,7 +80,7 @@ const App: FC = () => {
           />
         )
       ) : (
-        'Loading'
+        <Download />
       )}
     </DivApp>
   );

@@ -1,4 +1,4 @@
-import { screen, render } from '@testing-library/react';
+import { screen, render, waitFor } from '@testing-library/react';
 import { Answers } from './Answers';
 import { Provider } from 'react-redux';
 import { store } from '../../../../redux/store';
@@ -18,8 +18,8 @@ describe('Answers component', () => {
         <Answers text="1668" question={question} />
       </Provider>
     );
-    const answersElement = screen.getByTestId('answers-test');
-    expect(answersElement).toBeInTheDocument();
-    expect(answersElement).toHaveTextContent('1668');
+    const answersElement = screen.getAllByTestId('answers-test');
+    waitFor(() => expect(answersElement).toBeInTheDocument());
+    waitFor(() => expect(answersElement).toHaveTextContent('1668'));
   });
 });

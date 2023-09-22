@@ -1,5 +1,5 @@
 export interface IFullInfoResults {
-  yourAnswersArr: string[];
+  answers: string[];
 }
 
 export enum BallQuantity {

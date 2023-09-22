@@ -3,7 +3,7 @@ import { FullInfoResults } from './FullInfoResults';
 import { Provider } from 'react-redux';
 import { store } from '../../../../redux/store';
 
-const yourAnswersArr: string[] = [
+const answers: string[] = [
   'Valve',
   'Alexander Flemming',
   'Сатурн, Меркурий',
@@ -19,7 +19,7 @@ describe('FulInfoResults component', () => {
   it('FulInfoResults shoud be render', () => {
     render(
       <Provider store={store}>
-        <FullInfoResults yourAnswersArr={yourAnswersArr} />
+        <FullInfoResults answers={answers} />
       </Provider>
     );
     const FulInfoResultsElement = screen.getByTestId('fulInfoResults-test');

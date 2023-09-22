@@ -4,14 +4,14 @@ import { ButtonBlock, FinishBlockText, FinishImg, WrapperFinish } from './Finish
 import { useSelector } from 'react-redux';
 import { questinosSelector } from '../../redux/slices/questionSlice';
 import { imgUrl } from '../../assets/img/restart';
-import { MyButton } from '../Button/Button';
+import { MyButton } from '../Button/MyButton';
 
 interface IFinish {
   totalScore: number;
   onClickRestart: () => void;
   onClickOpenFullResult: () => void;
   openFullResult: boolean;
-  yourAnswersArr: string[];
+  answers: string[];
 }
 
 export const Finish: FC<IFinish> = ({
@@ -19,7 +19,7 @@ export const Finish: FC<IFinish> = ({
   onClickRestart,
   onClickOpenFullResult,
   openFullResult,
-  yourAnswersArr,
+  answers,
 }) => {
   const { questions } = useSelector(questinosSelector);
 
@@ -33,7 +33,7 @@ export const Finish: FC<IFinish> = ({
         <MyButton onClick={onClickRestart} text="Пройти еще раз" />
         <MyButton onClick={onClickOpenFullResult} text="Cтатистика" />
       </ButtonBlock>
-      {openFullResult && <FullInfoResults yourAnswersArr={yourAnswersArr} />}
+      {openFullResult && <FullInfoResults answers={answers} />}
     </WrapperFinish>
   );
 };

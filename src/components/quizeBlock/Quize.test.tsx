@@ -11,15 +11,11 @@ const question = {
   variants: ['Valve', 'Pixeltail Games', 'Ubisoft', 'Electronic Arts'],
 };
 
-const onClickAnswer = () => {
-  return;
-};
-
 describe('Quize component', () => {
   it('Quize shoud be render', () => {
     render(
       <Provider store={store}>
-        <Quize question={question} step={0} onClickAnswer={onClickAnswer} />
+        <Quize question={question} step={0} onClick={jest.fn()} />
       </Provider>
     );
     const quizeElement = screen.getByTestId('quize-test');

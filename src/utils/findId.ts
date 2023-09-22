@@ -1,4 +1,4 @@
-import { IAnswer } from './../redux/slices/answerSlice';
+import { IAnswer } from '../redux/types';
 
 export const findId = (text: string, answer: IAnswer[]) => {
   let isTrueAnswer = false;

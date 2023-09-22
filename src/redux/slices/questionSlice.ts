@@ -1,26 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { RootState } from '../store';
+import { IfullOrders } from '../types';
 
 export const getAsyncQuestions = createAsyncThunk('questions/getAsyncQuestions', async () => {
   const { data } = await axios.get('https://650860cf56db83a34d9c3e6e.mockapi.io/quize/questions');
   return data;
 });
-
-export interface IItems {
-  id: string;
-  title: string;
-  variants: string[];
-  correct: number | number[];
-  dificulty: string;
-}
-
-interface IfullOrders {
-  questions: {
-    items: IItems[];
-    status: string;
-  };
-}
 
 const initialState: IfullOrders = {
   questions: {

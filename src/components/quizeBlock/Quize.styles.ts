@@ -36,3 +36,18 @@ export const Wrapper = styled.div({
     transform: 'translateX(-50%)',
   },
 });
+
+export const Question = styled.article({
+  fontSize: '20px',
+  fontWeight: '600',
+  '@media (max-width: 1025px)': {
+    height: 'auto',
+  },
+  '@media (max-width: 900px)': {
+    height: '65px',
+    overflowY: 'scroll',
+  },
+  '@media (max-width: 426px)': {
+    fontSize: '18px',
+  },
+});

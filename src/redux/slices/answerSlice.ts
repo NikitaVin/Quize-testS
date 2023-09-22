@@ -1,13 +1,6 @@
+import { IAnswer, IAnswerSlice } from '../types';
 import { RootState } from './../store';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-export interface IAnswer {
-  variant: string;
-}
-
-interface IAnswerSlice {
-  answer: IAnswer[];
-}
 
 const initialState: IAnswerSlice = {
   answer: [],
